@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +51,12 @@ public class CameraActivity extends AppCompatActivity {
 
     private void init(){
         //设置视频保存路径
-        jCameraView.setSaveVideoPath(getCacheDir() + File.separator + "matisse");
+        File videoFile = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+        if(videoFile!=null) {
+            jCameraView.setSaveVideoPath(videoFile.getAbsolutePath());
+        }else {
+            jCameraView.setSaveVideoPath(getCacheDir() + File.separator + "video");
+        }
         jCameraView.setFeatures(getFeature());
         jCameraView.setMediaQuality(JCameraView.MEDIA_QUALITY_MIDDLE);
         jCameraView.setErrorLisenter(new ErrorListener() {
